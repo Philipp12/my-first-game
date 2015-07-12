@@ -1,0 +1,77 @@
+window.onload = function tick(){
+    game = new brick(20,20,400,400,"#708090"); // объект - игровое поле
+    player = new brick(game.width / 2 - 15,game.height - 35,50,50,"#2F4F4F"); //объект - игрок
+    player.vX = 2; // скорость игрока
+    frag = new brick(game.width / 2, 25, 50, 50,"#2F4F4F");// объект кирпича
+    ball = new brick(game.width /2 - 20, game.height - player.height - 10, 20, 20, "#fff"); // щарик
+    ball.vX = -2;
+    ball.vY = -2;
+    frag.vX = 2;
+    canvas = document.getElementById("t");
+    context = canvas.getContext('2d');
+    canvas.onmousemove = playerMove;
+    setInterval(play, 1000 / 50);
+    draw();
+}
+
+function draw(){
+    game.draw();
+    player.draw();
+    ball.draw();
+    frag.draw();
+}
+
+function brick(x,y,width,height,color){
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.color = color;
+    this.draw = function(){
+        context.fillStyle = this.color;// чтобы объекты были того цвета, который указан в вызове функции - конструктора
+        context.fillRect(this.x,this.y,this.height,this.width)
+    }
+}
+// движение фрага
+function fragMove (){
+    frag.x += frag.vX;
+    if (frag.x + frag.width > game.width) {
+       frag.vX = -frag.vX;
+    }
+    if(frag.x < 25){
+        frag.vX = -frag.vX;
+    }
+}
+    
+// оживление игрока
+function playerMove(e){
+        var x = e.pageX;
+        if (player.width + 10 / 2 < x && x < game.width - player.width / 2 ){
+            player.x = x - player.width / 2;
+    }
+}
+// столкновения 
+function collision (){
+    
+}
+// обновление игры
+function update(){
+    fragMove();
+    if (ball.y - 20 < 0 || ball.y + player.height + 10 > game.height){
+        ball.vY = - ball.vY;
+    }
+    if (ball.x - 20 < 0){
+        ball.vX = - ball.vX;
+    }
+    if (ball.x  > game.width ){
+        ball.vX = - ball.vX;
+    }
+    ball.x += ball.vX;
+    ball.y += ball.vY;
+}
+
+// функция - игра
+function play(){
+    draw();
+    update();
+}
