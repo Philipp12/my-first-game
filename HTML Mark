@@ -1,0 +1,10 @@
+html>
+<head>
+<meta charset="utf-8">
+<script src="trall.js"></script>
+</head>
+<body>
+<canvas width="900" height="600" id="t" style="border:1px solid black">
+</canvas>
+</body>
+</html>
